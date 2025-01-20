@@ -68,9 +68,15 @@ function connectVariablesToGLSL() {
 
 // HTML FUNCTIONS //
 
+// UI Constants
+const POINT = 0;
+const TRIANGLE = 1;
+const CIRCLE = 2;
+
 // UI Globals
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSize = 10;
+let g_selectedType = POINT;
 
 // Set up actions for HTML UI elements
 function addActionsForHtmlUI() {
@@ -78,6 +84,10 @@ function addActionsForHtmlUI() {
   document.getElementById('green').onclick = function () { g_selectedColor = [0.0, 1.0, 0.0, 1.0]; };
   document.getElementById('red').onclick = function () { g_selectedColor = [1.0, 0.0, 0.0, 1.0]; };
   document.getElementById('clear').onclick = function () { g_shapesList = []; renderAllShapes(); };
+
+  document.getElementById('point').onclick = function () { g_selectedType = POINT; };
+  document.getElementById('triangle').onclick = function () { g_selectedType = TRIANGLE; };
+  document.getElementById('circle').onclick = function () { g_selectedType = CIRCLE; };
 
   // Color Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function () { g_selectedColor[0] = this.value / 100; });
@@ -99,6 +109,7 @@ function main() {
   addActionsForHtmlUI();
 
   // Register function (event handler) to be called on a mouse press
+  canvas.onclick = click;
   canvas.onmousemove = function (ev) { if (ev.buttons == 1) { click(ev) } };
 
   // Specify the color for clearing <canvas>
@@ -120,30 +131,30 @@ function click(ev) {
   [x, y] = convertCoordinatesEventToGL(ev);
 
 
-  // Create and store the new point
-  let point = new Triangle();
-  point.position = [x, y];
-  point.color = g_selectedColor.slice();
-  point.size = g_selectedSize;
-  g_shapesList.push(point);
-
-  // // Store the coordinates to g_points array
-  // g_points.push([x, y]);
-
-  // // Store the color to g_colors array
-  // g_colors.push(g_selectedColor.slice());
-
-  // // Store the size to g_colors array
-  // g_sizes.push(g_selectedSize);
-
-  // if (x >= 0.0 && y >= 0.0) {      // First quadrant
-  //   g_colors.push([1.0, 0.0, 0.0, 1.0]);  // Red
-  // } else if (x < 0.0 && y < 0.0) { // Third quadrant
-  //   g_colors.push([0.0, 1.0, 0.0, 1.0]);  // Green
-  // } else {                         // Others
-  //   g_colors.push([1.0, 1.0, 1.0, 1.0]);  // White
-  // }
-
+  // Create and store the new shape
+  switch (g_selectedType) {
+    case TRIANGLE:
+      let triangle = new Triangle();
+      triangle.position = [x, y];
+      triangle.color = g_selectedColor.slice();
+      triangle.size = g_selectedSize;
+      g_shapesList.push(triangle);
+      break;
+    case POINT:
+      let point = new Point();
+      point.position = [x, y];
+      point.color = g_selectedColor.slice();
+      point.size = g_selectedSize;
+      g_shapesList.push(point);
+      break;
+    case CIRCLE:
+      let circle = new Circle();
+      circle.position = [x, y];
+      circle.color = g_selectedColor.slice();
+      circle.size = g_selectedSize;
+      g_shapesList.push(circle);
+      break;
+  }
 
   // Draw every shape in the canvas
   renderAllShapes();
