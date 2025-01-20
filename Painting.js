@@ -76,6 +76,7 @@ const CIRCLE = 2;
 // UI Globals
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSize = 10;
+let g_selectedSegments = 10;
 let g_selectedType = POINT;
 
 // Set up actions for HTML UI elements
@@ -89,6 +90,8 @@ function addActionsForHtmlUI() {
   document.getElementById('triangle').onclick = function () { g_selectedType = TRIANGLE; };
   document.getElementById('circle').onclick = function () { g_selectedType = CIRCLE; };
 
+  document.getElementById('sketch').onclick = function () { g_shapesList.push(new TotoroSketch()); renderAllShapes(); };
+
   // Color Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function () { g_selectedColor[0] = this.value / 100; });
   document.getElementById('greenSlide').addEventListener("mouseup", function () { g_selectedColor[1] = this.value / 100; });
@@ -96,6 +99,9 @@ function addActionsForHtmlUI() {
 
   // Size Slider Events
   document.getElementById('sizeSlide').addEventListener("mouseup", function () { g_selectedSize = this.value; });
+
+  // Circle Segment Slider Events
+  document.getElementById('segmentSlide').addEventListener("mouseup", function () { g_selectedSegments = this.value; });
 }
 
 function main() {
@@ -152,6 +158,7 @@ function click(ev) {
       circle.position = [x, y];
       circle.color = g_selectedColor.slice();
       circle.size = g_selectedSize;
+      circle.segments = g_selectedSegments;
       g_shapesList.push(circle);
       break;
   }
