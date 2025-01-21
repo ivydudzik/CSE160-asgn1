@@ -182,6 +182,7 @@ function click(ev) {
         circle_mirror.position = [-x, y];
         circle_mirror.color = g_selectedColor.slice();
         circle_mirror.size = g_selectedSize;
+        circle_mirror.segments = g_selectedSegments;
         g_shapesList.push(circle_mirror);
       }
       break;
