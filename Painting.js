@@ -90,7 +90,7 @@ function addActionsForHtmlUI() {
   document.getElementById('triangle').onclick = function () { g_selectedType = TRIANGLE; };
   document.getElementById('circle').onclick = function () { g_selectedType = CIRCLE; };
 
-  document.getElementById('sketch').onclick = function () { g_shapesList.push(new TotoroSketch()); renderAllShapes(); };
+  document.getElementById('sketch').onclick = function () { let sketch = new TotoroSketch(); g_shapesList.push(sketch); renderAllShapes(); };
 
   // Color Slider Events
   document.getElementById('redSlide').addEventListener("mouseup", function () { g_selectedColor[0] = this.value / 100; });
