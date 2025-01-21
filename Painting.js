@@ -78,6 +78,7 @@ let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSize = 10;
 let g_selectedSegments = 10;
 let g_selectedType = POINT;
+let g_mirrorMode = false;
 
 // Set up actions for HTML UI elements
 function addActionsForHtmlUI() {
@@ -89,6 +90,8 @@ function addActionsForHtmlUI() {
   document.getElementById('point').onclick = function () { g_selectedType = POINT; };
   document.getElementById('triangle').onclick = function () { g_selectedType = TRIANGLE; };
   document.getElementById('circle').onclick = function () { g_selectedType = CIRCLE; };
+
+  document.getElementById('mirrormode').onclick = function () { if (g_mirrorMode) g_mirrorMode = false; else g_mirrorMode = true; };
 
   document.getElementById('sketch').onclick = function () { let sketch = new TotoroSketch(); g_shapesList.push(sketch); renderAllShapes(); };
 
@@ -145,6 +148,13 @@ function click(ev) {
       triangle.color = g_selectedColor.slice();
       triangle.size = g_selectedSize;
       g_shapesList.push(triangle);
+      if (g_mirrorMode) {
+        let triangle_mirror = new Triangle();
+        triangle_mirror.position = [-x, y];
+        triangle_mirror.color = g_selectedColor.slice();
+        triangle_mirror.size = g_selectedSize;
+        g_shapesList.push(triangle_mirror);
+      }
       break;
     case POINT:
       let point = new Point();
@@ -152,6 +162,13 @@ function click(ev) {
       point.color = g_selectedColor.slice();
       point.size = g_selectedSize;
       g_shapesList.push(point);
+      if (g_mirrorMode) {
+        let point_mirror = new Point();
+        point_mirror.position = [-x, y];
+        point_mirror.color = g_selectedColor.slice();
+        point_mirror.size = g_selectedSize;
+        g_shapesList.push(point_mirror);
+      }
       break;
     case CIRCLE:
       let circle = new Circle();
@@ -160,6 +177,13 @@ function click(ev) {
       circle.size = g_selectedSize;
       circle.segments = g_selectedSegments;
       g_shapesList.push(circle);
+      if (g_mirrorMode) {
+        let circle_mirror = new Circle();
+        circle_mirror.position = [-x, y];
+        circle_mirror.color = g_selectedColor.slice();
+        circle_mirror.size = g_selectedSize;
+        g_shapesList.push(circle_mirror);
+      }
       break;
   }
 
